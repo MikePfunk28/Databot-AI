@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data AI Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Data AI Chatbot</h2>
+            </div>
+            <div class="sidebar-content">
+                <div class="section">
+                    <h3>Datasets</h3>
+                    <div class="dataset-list" id="datasetList">
+                        <p>Loading datasets...</p>
+                    </div>
+                    <div class="dataset-actions">
+                        <button id="uploadBtn">Upload Data</button>
+                        <button id="urlBtn">Add URL</button>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Active Datasets</h3>
+                    <div class="active-dataset-list" id="activeDatasetList">
+                        <p>No active datasets</p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Settings</h3>
+                    <div class="settings">
+                        <label>
+                            <input type="checkbox" id="useRag" checked>
+                            Use RAG
+                        </label>
+                        <label>
+                            <input type="checkbox" id="retrieveExternal" checked>
+                            Retrieve External Data
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <button id="clearHistoryBtn">Clear History</button>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-message">
+                        <h2>Welcome to Data AI Chatbot</h2>
+                        <p>Your interactive data analysis assistant</p>
+                        <p>Upload data or add URLs to get started, then ask questions about your data.</p>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <textarea id="messageInput" placeholder="Ask a question about your data..."></textarea>
+                    <button id="sendBtn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeUploadModal">&times;</span>
+            <h2>Upload Data</h2>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="fileInput">Select File:</label>
+                    <input type="file" id="fileInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="fileType">File Type:</label>
+                    <select id="fileType">
+                        <option value="csv">CSV</option>
+                        <option value="json">JSON</option>
+                        <option value="excel">Excel</option>
+                        <option value="text">Text</option>
+                    </select>
+                </div>
+                <div class="form-group" id="delimiterGroup">
+                    <label for="delimiter">Delimiter (for CSV):</label>
+                    <input type="text" id="delimiter" value="," maxlength="1">
+                </div>
+                <div class="form-group" id="sheetNameGroup" style="display: none;">
+                    <label for="sheetName">Sheet Name (for Excel, optional):</label>
+                    <input type="text" id="sheetName">
+                </div>
+                <div class="form-group" id="chunkSizeGroup" style="display: none;">
+                    <label for="chunkSize">Chunk Size (for Text):</label>
+                    <input type="number" id="chunkSize" value="1000" min="100">
+                </div>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- URL Modal -->
+    <div class="modal" id="urlModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeUrlModal">&times;</span>
+            <h2>Add URL</h2>
+            <form id="urlForm">
+                <div class="form-group">
+                    <label for="urlInput">URL:</label>
+                    <input type="url" id="urlInput" required placeholder="https://example.com">
+                </div>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Dataset Info Modal -->
+    <div class="modal" id="datasetInfoModal">
+        <div class="modal-content dataset-info-content">
+            <span class="close-btn" id="closeDatasetInfoModal">&times;</span>
+            <h2 id="datasetInfoTitle">Dataset Information</h2>
+            <div class="dataset-info" id="datasetInfo">
+                <p>Loading dataset information...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

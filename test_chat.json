@@ -1,0 +1,6 @@
+{
+    "message": "Hello, can you help me analyze data?",
+    "session_id": "test",
+    "use_rag": false,
+    "retrieve_external": false
+}

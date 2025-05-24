@@ -1,0 +1,6 @@
+{
+    "message": "Tell me about the data I uploaded. What information does it contain?",
+    "session_id": "test",
+    "use_rag": true,
+    "retrieve_external": false
+}

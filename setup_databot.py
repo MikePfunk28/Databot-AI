@@ -353,7 +353,7 @@ def main():
     
     if not args.test_only:
         # Setup directories
-        setup_directories(base_dir)
+        setup_directories()
         
         # Create config files
         create_config_files(base_dir)

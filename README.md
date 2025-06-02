@@ -1,6 +1,6 @@
-# Data AI Chatbot
+# DataBot AI - Comprehensive Data Analysis System
 
-A local AI chatbot that uses Ollama with the phi4-mini-reasoning model to analyze your data, provide insights, and answer questions through natural conversation.
+A sophisticated AI-powered data analysis system built with Phi4-mini-reasoning and enhanced with advanced workflow management, vector embeddings, and intelligent data insights generation.
 
 ## Features
 

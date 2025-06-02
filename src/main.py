@@ -18,6 +18,8 @@ from src.model_wrapper import ModelWrapper
 from src.data_ingestion import DataIngestion
 from src.rag_pipeline import RAGPipeline
 from src.vector_embedding import VectorEmbedding, SENTENCE_TRANSFORMERS_AVAILABLE, FAISS_AVAILABLE
+from src.workflow_manager import WorkflowManager
+from src.analysis_learning import AnalysisLearningSystem
 
 # Configure logging
 logging.basicConfig(level=logging.INFO,
@@ -61,16 +63,29 @@ When analyzing data:
 
 Always maintain a helpful, informative tone and focus on providing value through data-driven insights.""")
 
-# Initialize components
+# Initialize components with DataBot models
 model_wrapper = ModelWrapper(
-    model_name="databot",
+    model_name="databot-instruct",
     system_prompt_path=SYSTEM_PROMPT_PATH
 )
 
 data_ingestion = DataIngestion(data_dir=DATA_DIR)
-vector_embedding = VectorEmbedding(data_dir=DATA_DIR)
+vector_embedding = VectorEmbedding(data_dir=DATA_DIR, model_name="mikepfunk28/databot-embed")
 rag_pipeline = RAGPipeline(
     data_dir=DATA_DIR, vector_embedding=vector_embedding)
+
+# Initialize analysis learning system
+analysis_learning = AnalysisLearningSystem(data_dir=DATA_DIR)
+
+# Initialize workflow manager
+workflow_components = {
+    'model_wrapper': model_wrapper,
+    'data_ingestion': data_ingestion,
+    'vector_embedding': vector_embedding,
+    'rag_pipeline': rag_pipeline,
+    'analysis_learning': analysis_learning
+}
+workflow_manager = WorkflowManager(data_dir=DATA_DIR, components=workflow_components)
 
 # Session management
 active_sessions = {}
@@ -442,6 +457,254 @@ def load_existing_sessions():
 
 # Initialize sessions
 load_existing_sessions()
+
+
+# Workflow API endpoints
+@app.route('/api/workflows', methods=['GET'])
+def list_workflows():
+    """List all workflows"""
+    try:
+        workflows = workflow_manager.list_workflows()
+        return jsonify({
+            'success': True,
+            'workflows': workflows
+        })
+    except Exception as e:
+        logger.error(f"Error listing workflows: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/workflows', methods=['POST'])
+def create_workflow():
+    """Create a new workflow"""
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'No data provided'
+            }), 400
+        
+        name = data.get('name')
+        description = data.get('description', '')
+        tasks = data.get('tasks', [])
+        
+        if not name or not tasks:
+            return jsonify({
+                'success': False,
+                'error': 'Name and tasks are required'
+            }), 400
+        
+        workflow_id = workflow_manager.create_workflow(name, description, tasks)
+        
+        return jsonify({
+            'success': True,
+            'workflow_id': workflow_id
+        })
+        
+    except Exception as e:
+        logger.error(f"Error creating workflow: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/workflows/<workflow_id>/execute', methods=['POST'])
+def execute_workflow(workflow_id):
+    """Execute a workflow"""
+    try:
+        success = workflow_manager.execute_workflow(workflow_id)
+        
+        return jsonify({
+            'success': success,
+            'workflow_id': workflow_id
+        })
+        
+    except Exception as e:
+        logger.error(f"Error executing workflow: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/workflows/<workflow_id>/status', methods=['GET'])
+def get_workflow_status(workflow_id):
+    """Get workflow status"""
+    try:
+        status = workflow_manager.get_workflow_status(workflow_id)
+        
+        if status is None:
+            return jsonify({
+                'success': False,
+                'error': 'Workflow not found'
+            }), 404
+        
+        return jsonify({
+            'success': True,
+            'status': status
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting workflow status: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/workflows/analyze', methods=['POST'])
+def create_analysis_workflow():
+    """Create a predefined data analysis workflow"""
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'No data provided'
+            }), 400
+        
+        dataset_path = data.get('dataset_path')
+        analysis_type = data.get('analysis_type', 'comprehensive')
+        
+        if not dataset_path:
+            return jsonify({
+                'success': False,
+                'error': 'dataset_path is required'
+            }), 400
+        
+        workflow_id = workflow_manager.create_data_analysis_workflow(
+            dataset_path, analysis_type
+        )
+        
+        # Optionally auto-execute the workflow
+        if data.get('auto_execute', False):
+            workflow_manager.execute_workflow(workflow_id)
+        
+        return jsonify({
+            'success': True,
+            'workflow_id': workflow_id
+        })
+        
+    except Exception as e:
+        logger.error(f"Error creating analysis workflow: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/learning/insights', methods=['GET'])
+def get_learning_insights():
+    """Get insights about what the system has learned"""
+    try:
+        insights = analysis_learning.get_learning_insights()
+        return jsonify({
+            'success': True,
+            'insights': insights
+        })
+    except Exception as e:
+        logger.error(f"Error getting learning insights: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/learning/recommend', methods=['POST'])
+def get_analysis_recommendations():
+    """Get analysis recommendations for a dataset"""
+    try:
+        data = request.get_json()
+        dataset_characteristics = data.get('dataset_characteristics', {})
+        
+        if not dataset_characteristics:
+            return jsonify({
+                'success': False,
+                'error': 'Dataset characteristics required'
+            }), 400
+        
+        recommendations = analysis_learning.optimize_for_dataset(dataset_characteristics)
+        method, confidence = analysis_learning.get_recommended_method(dataset_characteristics)
+        
+        return jsonify({
+            'success': True,
+            'recommended_method': method,
+            'confidence': confidence,
+            'detailed_recommendations': recommendations
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting analysis recommendations: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/learning/validate', methods=['POST'])
+def validate_insight():
+    """Validate an insight with actual outcomes"""
+    try:
+        data = request.get_json()
+        insight_id = data.get('insight_id')
+        validation_score = data.get('validation_score')
+        impact_score = data.get('impact_score')
+        
+        if not insight_id or validation_score is None:
+            return jsonify({
+                'success': False,
+                'error': 'insight_id and validation_score required'
+            }), 400
+        
+        analysis_learning.validate_insight(insight_id, validation_score, impact_score)
+        
+        return jsonify({
+            'success': True,
+            'message': 'Insight validated successfully'
+        })
+        
+    except Exception as e:
+        logger.error(f"Error validating insight: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """Health check endpoint for Docker"""
+    try:
+        # Check if all components are working
+        status = {
+            'status': 'healthy',
+            'components': {
+                'model_wrapper': model_wrapper is not None,
+                'vector_embedding': vector_embedding is not None,
+                'analysis_learning': analysis_learning is not None,
+                'workflow_manager': workflow_manager is not None
+            },
+            'models': {
+                'databot_instruct': 'databot-instruct' in str(model_wrapper.model_name) if model_wrapper else False,
+                'databot_embed': 'databot-embed' in str(vector_embedding.model_name) if vector_embedding else False
+            }
+        }
+        
+        return jsonify(status)
+        
+    except Exception as e:
+        return jsonify({
+            'status': 'unhealthy',
+            'error': str(e)
+        }), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

@@ -11,6 +11,7 @@ import json
 import numpy as np
 import hashlib
 import pickle
+import requests
 from typing import Dict, List, Optional, Union, Any, Tuple
 
 # Check for sentence_transformers availability
@@ -37,13 +38,13 @@ class VectorEmbedding:
     Class for generating and managing vector embeddings.
     """
     
-    def __init__(self, data_dir: str, model_name: str = "all-MiniLM-L6-v2"):
+    def __init__(self, data_dir: str, model_name: str = "mikepfunk28/databot-embed"):
         """
         Initialize the vector embedding manager.
         
         Args:
             data_dir: Directory for storing embeddings
-            model_name: Name of the sentence transformer model
+            model_name: Name of the embedding model (default: mikepfunk28/databot-embed)
         """
         self.data_dir = data_dir
         self.model_name = model_name
@@ -52,13 +53,49 @@ class VectorEmbedding:
         
         # Initialize embedding model if available
         self.model = None
-        if SENTENCE_TRANSFORMERS_AVAILABLE:
+        self.use_ollama = False
+        
+        # Check if this is an Ollama model (contains slash like mikepfunk28/databot-embed)
+        if "/" in model_name and not model_name.startswith("sentence-transformers/"):
+            self.use_ollama = True
+            print(f"Using Ollama embedding model: {model_name}")
+            # Test Ollama connection
             try:
-                self.model = SentenceTransformer(model_name)
-                print(f"Initialized embedding model: {model_name}")
+                response = requests.get("http://127.0.0.1:11434/api/tags", timeout=5)
+                if response.status_code == 200:
+                    models = response.json()
+                    available_models = [m['name'] for m in models.get('models', [])]
+                    if model_name in available_models:
+                        print(f"Successfully connected to Ollama model: {model_name}")
+                    else:
+                        print(f"Warning: {model_name} not found in Ollama. Available models: {available_models}")
+                else:
+                    print("Warning: Ollama server not responding properly")
+                    self.use_ollama = False
             except Exception as e:
-                print(f"Error initializing embedding model: {e}")
-                print("Falling back to simulated embeddings")
+                print(f"Warning: Cannot connect to Ollama server: {e}")
+                self.use_ollama = False
+        
+        # Fallback to sentence transformers if not using Ollama
+        if not self.use_ollama and SENTENCE_TRANSFORMERS_AVAILABLE:
+            try:
+                # Try to load the nomic embed model first
+                if "nomic-embed" in model_name:
+                    print(f"Loading Nomic Embed model: {model_name}")
+                    self.model = SentenceTransformer(model_name, trust_remote_code=True)
+                else:
+                    self.model = SentenceTransformer(model_name)
+                print(f"Successfully initialized embedding model: {model_name}")
+            except Exception as e:
+                print(f"Error initializing embedding model {model_name}: {e}")
+                print("Trying fallback model: all-MiniLM-L6-v2")
+                try:
+                    self.model = SentenceTransformer("all-MiniLM-L6-v2")
+                    self.model_name = "all-MiniLM-L6-v2"
+                    print("Successfully loaded fallback model")
+                except Exception as e2:
+                    print(f"Error with fallback model: {e2}")
+                    print("Falling back to simulated embeddings")
     
     def generate_embeddings(self, dataset_id: str) -> bool:
         """
@@ -257,16 +294,41 @@ class VectorEmbedding:
         Returns:
             Embedding vector
         """
-        if SENTENCE_TRANSFORMERS_AVAILABLE and self.model:
+        if self.use_ollama:
+            # Use Ollama embedding model
+            try:
+                response = requests.post(
+                    "http://127.0.0.1:11434/api/embeddings",
+                    json={
+                        "model": self.model_name,
+                        "prompt": text
+                    },
+                    timeout=30
+                )
+                if response.status_code == 200:
+                    result = response.json()
+                    embedding = np.array(result["embedding"], dtype=np.float32)
+                    return embedding / np.linalg.norm(embedding)  # Normalize
+                else:
+                    print(f"Ollama embedding error: {response.status_code}")
+                    return self._fallback_embedding(text)
+            except Exception as e:
+                print(f"Error getting Ollama embedding: {e}")
+                return self._fallback_embedding(text)
+        elif SENTENCE_TRANSFORMERS_AVAILABLE and self.model:
             # Use real embedding
             return self.model.encode(text)
         else:
             # Simulate embedding
-            print("Using simulated embedding (random vector)")
-            text_hash = int(hashlib.md5(text.encode()).hexdigest(), 16)
-            np.random.seed(text_hash)
-            embedding = np.random.randn(384).astype(np.float32)
-            return embedding / np.linalg.norm(embedding)
+            return self._fallback_embedding(text)
+    
+    def _fallback_embedding(self, text: str) -> np.ndarray:
+        """Generate fallback embedding when models are unavailable"""
+        print("Using simulated embedding (random vector)")
+        text_hash = int(hashlib.md5(text.encode()).hexdigest(), 16)
+        np.random.seed(text_hash)
+        embedding = np.random.randn(384).astype(np.float32)
+        return embedding / np.linalg.norm(embedding)
     
     def batch_get_embeddings(self, texts: List[str]) -> np.ndarray:
         """

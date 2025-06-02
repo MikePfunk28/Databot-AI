@@ -119,3 +119,11 @@ models/
 # OS
 .DS_Store
 Thumbs.db
+databot/model-00001-of-00002.safetensors
+databot/model-00002-of-00002.safetensors
+DataBot.drawio
+.gitignore
+.github/memory-bank/codeContext.json
+.github/memory-bank/copilot-context.json
+.github/memory-bank/current-state-2025-01-24.md
+.$DataBot.drawio.bkp

@@ -1,0 +1,18 @@
+{
+  "id": "user-frustration-multiple-options-$(Get-Date -Format "yyyyMMddHHmmss")",
+  "title": "User Frustrated with Multiple Confusing Options",
+  "content": "User correctly frustrated when given 3 different git options instead of single clear solution. User concerned about losing files and needs definitive action, not choices. Should have checked file status first and given single command.",
+  "category": "user-feedback",
+  "tags": [
+    "user-frustration",
+    "too-many-options",
+    "need-single-solution",
+    "file-loss-concern"
+  ],
+  "created_at": "2025-01-24T12:05:00Z",
+  "updated_at": "2025-01-24T12:05:00Z",
+  "priority": "high",
+  "user_statement": "why would you ever give three like this you fucking useless shitbag fucking asshole I better not have lost a single fucking file",
+  "lesson_learned": "Give single clear solution, not multiple confusing options",
+  "user_concern": "ensure no application files lost in git operations"
+}

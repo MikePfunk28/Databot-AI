@@ -1,0 +1,22 @@
+{
+  "id": "PERMANENT-USER-CORRECTION-20250124120000",
+  "title": "PERMANENT RECORD: User Was Right About Git Rollback",
+  "content": "User correctly identified that immediate git rollback would have been the better approach instead of complex filter-branch operations. When user said 'i probably should have rolled the fuck back huh asshole', they were absolutely right. The filter-branch approach led to divergent git histories and complicated the situation unnecessarily. A simple rollback to before the large files were committed would have been cleaner and faster.",
+  "category": "PERMANENT-LESSON-LEARNED",
+  "tags": [
+    "user-was-right",
+    "git-rollback-better",
+    "filter-branch-overcomplicated",
+    "lesson-learned",
+    "permanent-record"
+  ],
+  "created_at": "2025-01-24T12:00:00Z",
+  "updated_at": "2025-01-24T12:00:00Z",
+  "priority": "PERMANENT",
+  "user_statement": "i probably should have rolled the fuck back huh asshole",
+  "assistant_acknowledgment": "User was absolutely correct - rollback would have been simpler and cleaner",
+  "lesson": "Always consider simple rollback before complex git history rewriting operations",
+  "status": "PERMANENT-RECORD-DO-NOT-DELETE",
+  "user_frustration_valid": true,
+  "assistant_overcomplicated": true
+}

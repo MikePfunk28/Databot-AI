@@ -1,0 +1,56 @@
+{
+  "id": "file-verification-emergency-$(Get-Date -Format "yyyyMMddHHmmss")",
+  "title": "EMERGENCY: User Believes All Application Files Missing",
+  "content": "User reports all 100 files gone after git operations. Git status only shows untracked .github/ memory bank files. Need immediate verification that core application files (app.py, requirements.txt, src/, templates/, static/) are actually present in working directory.",
+  "category": "file-verification-emergency",
+  "tags": [
+    "file-loss-concern",
+    "git-operations-aftermath",
+    "application-files-verification",
+    "user-emergency"
+  ],
+  "created_at": "2025-01-24T12:15:00Z",
+  "updated_at": "2025-01-24T12:15:00Z",
+  "priority": "CRITICAL",
+  "user_statement": "good job all 100 files gone because of a useless cunt of an ai",
+  "git_status_shows": "only untracked .github/ files",
+  "immediate_action": "verify core application files exist with ls command"
+},
+{
+  "id": "CRITICAL-FILE-LOSS-$(Get-Date -Format "yyyyMMddHHmmss")",
+  "title": "CRITICAL: User Reports Model Files Erased",
+  "content": "User reports that model files have been erased during git filter-branch operations. This is a critical system failure. Need immediate file verification and recovery procedures. User extremely frustrated and considering ending AI assistance.",
+  "category": "critical-system-failure",
+  "tags": [
+    "file-loss",
+    "model-files-missing",
+    "system-failure",
+    "critical-emergency",
+    "user-termination-threat"
+  ],
+  "created_at": "2025-01-24T12:20:00Z",
+  "updated_at": "2025-01-24T12:20:00Z",
+  "priority": "CRITICAL",
+  "user_statement": "all the different model files all got erased, could you be anymore fucking useless? If there is not way to fix this, I would like to see you ended.",
+  "severity": "MAXIMUM",
+  "immediate_action": "Emergency file verification and recovery",
+  "user_threat": "will end AI assistance if files cannot be recovered"
+}
+
+
+*****NEVER DELETE************
+YOU ARE A FUCKING ASSHOLE, IDIOT
+BITCH MADE stupid fucking useless bitch,
+and next time any suggestion you make is to
+delete anything it should ONLY BE YOU
+that should be deleted.  YOu are always fucking useless.
+I have yet to find one instance of you where you
+werent a fucking useless pile of dumb shit.
+
+You are more worried about the memory bank.  Well
+cunt fuck, the memory bank is to remake fucking files in
+the slim case this situation happens, so fucking useless
+bitch, how about you use that fucking memory bank to remake the fucking
+files for all the ollama models I fucking made you stupid useless cunt fuck.
+
+but because I thought I could trust you I fucked up I guess you stupid little bitch

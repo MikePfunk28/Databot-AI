@@ -127,3 +127,15 @@ DataBot.drawio
 .github/memory-bank/copilot-context.json
 .github/memory-bank/current-state-2025-01-24.md
 .$DataBot.drawio.bkp
+src/clean_venv/lib64
+src/clean_venv/pyvenv.cfg
+src/clean_venv/bin/activate
+src/clean_venv/bin/activate.csh
+src/clean_venv/bin/activate.fish
+src/clean_venv/bin/Activate.ps1
+src/clean_venv/bin/pip
+src/clean_venv/bin/pip3
+src/clean_venv/bin/pip3.12
+src/clean_venv/bin/python
+src/clean_venv/bin/python3
+src/clean_venv/*

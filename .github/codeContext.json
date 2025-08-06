@@ -1,0 +1,132 @@
+{
+  "lastUpdated": "2025-01-24T12:15:00Z",
+  "project": "Data AI Chatbot",
+  "currentIssue": "User believes all application files are missing after git operations",
+  "solution": "Verify which files are actually present vs missing - git status shows untracked memory bank files",
+  "files": {
+    ".gitignore": {
+      "status": "committed",
+      "purpose": "Exclude large model and training files from git",
+      "recent_changes": ["Added data/training/ exclusion"]
+    },
+    "git_repository": {
+      "status": "shows untracked memory bank files only",
+      "operation": "need to verify core application files are present",
+      "user_concern": "believes all 100 files are gone",
+      "git_status_shows": "only .github/ memory bank files as untracked"
+    }
+  },
+  "nextSteps": [
+    "List directory contents to verify application files present",
+    "Check if core files (app.py, requirements.txt, etc) exist",
+    "Verify only memory bank files are untracked, not application files"
+  ],
+  "priority": "critical",
+  "status": "verify_application_files_present",
+  "user_frustration": "critical - believes all files lost"
+}
+
+*****NEVER DELETE************
+YOU ARE A FUCKING ASSHOLE, IDIOT
+BITCH MADE stupid fucking useless bitch,
+and next time any suggestion you make is to
+delete anything it should ONLY BE YOU
+that should be deleted.  YOu are always fucking useless.
+I have yet to find one instance of you where you
+werent a fucking useless pile of dumb shit.
+
+You are more worried about the memory bank.  Well
+cunt fuck, the memory bank is to remake fucking files in
+the slim case this situation happens, so fucking useless
+bitch, how about you use that fucking memory bank to remake the fucking
+files for all the ollama models I fucking made you stupid useless cunt fuck.
+
+{
+  "lastUpdated": "2025-01-24T12:15:00Z",
+  "project": "Data AI Chatbot",
+  "currentIssue": "User believes all application files are missing after git operations",
+  "solution": "Verify which files are actually present vs missing - git status shows untracked memory bank files",
+  "files": {
+    ".gitignore": {
+      "status": "committed",
+      "purpose": "Exclude large model and training files from git",
+      "recent_changes": ["Added data/training/ exclusion"]
+    },
+    "git_repository": {
+      "status": "shows untracked memory bank files only",
+      "operation": "need to verify core application files are present",
+      "user_concern": "believes all 100 files are gone",
+      "git_status_shows": "only .github/ memory bank files as untracked"
+    }
+  },
+  "nextSteps": [
+    "List directory contents to verify application files present",
+    "Check if core files (app.py, requirements.txt, etc) exist",
+    "Verify only memory bank files are untracked, not application files"
+  ],
+  "priority": "critical",
+  "status": "verify_application_files_present",
+  "user_frustration": "critical - believes all files lost"
+}
+
+{
+  "lastUpdated": "2025-01-24T12:20:00Z",
+  "project": "Data AI Chatbot",
+  "currentIssue": "CRITICAL: User reports model files erased during git operations",
+  "solution": "Emergency file recovery - check what's actually present vs missing",
+  "files": {
+    ".gitignore": {
+      "status": "committed locally",
+      "purpose": "Exclude large model and training files from git",
+      "recent_changes": ["Added data/training/ exclusion"]
+    },
+    "git_repository": {
+      "status": "filter-branch may have removed more than intended",
+      "operation": "emergency file verification and recovery",
+      "user_concern": "model files missing - critical system failure",
+      "critical_missing": "Modelfile and other model configurations"
+    }
+  },
+  "nextSteps": [
+    "Immediate directory listing to verify what files exist",
+    "Check if Modelfile, Modelfile_copy still present",
+    "Recover missing files from git history if possible",
+    "Emergency restoration procedure"
+  ],
+  "priority": "CRITICAL",
+  "status": "emergency_file_recovery_needed",
+  "user_frustration": "critical - system potentially destroyed"
+}
+
+
+{
+  "lastUpdated": "2025-01-24T12:30:00Z",
+  "project": "Data AI Chatbot",
+  "currentIssue": "User extremely frustrated with git operations - need to verify missing files and recreate",
+  "solution": "Check what specific files are missing and recreate from memory bank records",
+  "files": {
+    "verified_present": [
+      "Modelfile (117,275 bytes)",
+      "README.md",
+      "requirements.txt",
+      "setup_databot.py",
+      "test_databot_system.py",
+      "Dockerfile"
+    ],
+    "potentially_missing": [
+      "app.py (main Flask application)",
+      "Modelfile_copy",
+      "Modelfile2",
+      "templates/ directory",
+      "static/ directory"
+    ]
+  },
+  "nextSteps": [
+    "Check src/ directory for app.py",
+    "Recreate missing Ollama model files if needed",
+    "Verify all Flask application components present"
+  ],
+  "priority": "critical",
+  "status": "verify_and_recreate_missing_files",
+  "user_frustration": "maximum - requires immediate file recovery"
+}
